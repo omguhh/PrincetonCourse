@@ -1,0 +1,172 @@
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+
+public class Deque <Item> implements Iterable<Item> {
+		
+	private class Node
+	
+	{ 		// nested class to define nodes
+			Item item;
+			Node next;
+			Node previous;
+	}
+	
+	int N = 0;
+	Node carrier;
+	
+	
+	//Default constructor. Constructs an Empty DLL
+	public Deque(){
+		carrier = new Node ();
+		carrier.item=null;
+		carrier.next = carrier;
+		carrier.previous = carrier;
+		
+	}
+	
+	public boolean isEmpty()
+	{ 
+		
+		return carrier.next == carrier;
+		
+	} // Or: N == 0.
+
+
+	public int size() { 
+		
+		return N;
+	}
+	
+	public Item addFirst(Item item){
+		
+		if (item==null)
+		{
+			throw new NullPointerException();
+	}
+		Node newFirst = new Node ();
+		newFirst.item=item;
+		newFirst.previous=carrier;
+		newFirst.next=carrier.next;
+		carrier.next.previous=newFirst;
+		carrier.next=newFirst;
+		N++;
+		return item;
+	}
+	
+	public Item addLast (Item item){
+		if (item==null)
+		{
+			throw new NullPointerException();
+	}
+		
+		// Add item to the end of the list.
+		Node newLast = new Node ();
+		newLast.item=item;
+		newLast.previous=carrier.previous;
+		newLast.next=carrier;
+		carrier.previous.next=newLast;
+		carrier.previous=newLast;
+		N++;
+		
+		return item;
+	}
+	
+	public Item removeFirst() {
+		
+		if (isEmpty()) {
+	        throw new NoSuchElementException();
+		}
+		
+	     Item result = carrier.next.item;
+	        // This is why we initialize sentinel.next = sentinel;
+	       carrier.next = carrier.next.next;
+	       carrier.next.previous = carrier; // To avoid loitering
+	        N--;
+	       return result;
+	    }
+	
+	public Item removeLast() {
+		
+		if (isEmpty()) {
+        throw new NoSuchElementException();
+		}
+		
+		 Item result = carrier.previous.item;
+	        // This is why we initialize sentinel.next = sentinel;
+	       carrier.previous = carrier.previous.previous;
+	       carrier.previous.next = carrier; // To avoid loitering
+	        N--;
+	       return result;
+		
+	}
+	
+	public Iterator<Item> iterator()
+	
+	{ 
+		return new ListIterator(); 
+		
+	}
+		private class ListIterator implements Iterator<Item>
+			{
+				private Node current = carrier; 
+				
+				public boolean hasNext() 
+				
+				{ 
+					return current != null; 
+				
+				}
+				
+				public void remove() {
+		            throw new UnsupportedOperationException();
+		        }
+				
+				public Item next()	{
+					 if (!hasNext())
+			                throw new NoSuchElementException();
+					 
+					Item item = current.item;
+					current = current.next;
+					return item;
+				}
+	}
+
+
+
+public static void main (String [] args) {
+	
+	Deque<Integer> vietnam=new Deque<Integer>();
+	
+	vietnam.addFirst(1);
+	vietnam.addFirst(2);
+	vietnam.addFirst(3);
+	vietnam.addFirst(4);
+	vietnam.addFirst(5);
+	vietnam.addFirst(6);
+	
+	StdOut.print("Vietnam List : ");
+	while(!vietnam.isEmpty()){
+		StdOut.print( vietnam.removeFirst() + " , ");
+	}
+	
+	Deque<Integer> test2=new Deque<Integer>();
+	StdOut.print("TEST2 List : ");
+	
+	test2.addLast(1);
+	test2.addLast(2);
+	test2.addLast(3);
+	test2.addLast(4);
+	test2.addLast(5);
+	test2.addLast(6);
+	test2.addLast(7);
+	
+	while(!test2.isEmpty()){
+		StdOut.print(test2.removeLast() + " , ");
+	}
+	
+	//Iterator<Integer> iterator = vietnam.iterator();
+	
+
+}
+}
