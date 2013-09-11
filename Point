@@ -1,0 +1,91 @@
+/*************************************************************************
+ * Name: Yasmine 
+ * Email: yasmine.m.f@live.co.uk
+ *
+ * Compilation:  javac Point.java
+ * Execution:
+ * Dependencies: StdDraw.java
+ *
+ * Description: An immutable data type for points in the plane.
+ *
+ *************************************************************************/
+
+import java.util.Comparator;
+
+public class Point implements Comparable<Point> {
+
+    // compare points by slope
+    public final Comparator<Point> SLOPE_ORDER;       // YOUR DEFINITION HERE
+
+    private final int x;                              // x coordinate
+    private final int y;                              // y coordinate
+
+    // create the point (x, y)
+    public Point(int x, int y) {
+        /* DO NOT MODIFY */
+        this.x = x;
+        this.y = y;
+        SLOPE_ORDER = new SlopeOrder();
+    }
+
+   
+    public void draw() { 					// plot this point to standard drawing
+        /* DO NOT MODIFY */
+        StdDraw.point(x, y);
+    }
+
+ 
+    public void drawTo(Point that) {   // draw line between this point and that point to standard drawing
+        /* DO NOT MODIFY */
+        StdDraw.line(this.x, this.y, that.x, that.y);
+    }
+
+   
+    public double slopeTo(Point that) { 	// slope between this point and that point
+    	
+    	if(that.x==that.x){
+    		if(that.y==that.y)
+    		   return Double.NEGATIVE_INFINITY;
+    			return Double.POSITIVE_INFINITY;
+    	}
+    	
+    	if(that.y==this.y)	
+    		return 0.0;
+    	
+		  return (that.y-this.y)/(that.x-this.y);
+    }
+
+    // is this point lexicographically smaller than that one?
+    // comparing y-coordinates and breaking ties by x-coordinates
+    public int compareTo(Point that) {
+        if(this.y == that.y)
+         return this.x - that.x;
+        
+        return   	this.y - that.y;
+    }
+    
+    
+    private class SlopeOrder implements Comparator <Point>{
+    		//the one in the bracket is the argument point,inside the method body is the invoking point
+		public int compare(Point i, Point j) {
+		 double res = slopeTo(i) - slopeTo(j);		
+		 
+		 if(res < 0.0) 		 return -1;
+		 if(res > 0.0) 		 return 1;
+		 else
+			 return 0;
+		}
+    	
+    }
+   
+    public String toString() // return string representation of this point 
+    {
+        /* DO NOT MODIFY */
+        return "(" + x + ", " + y + ")";
+    }
+
+public static void main(String[] args) {
+        /* YOUR CODE HERE */
+    }
+   
+    
