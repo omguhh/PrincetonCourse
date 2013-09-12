@@ -1,0 +1,110 @@
+import java.util.Arrays;
+
+
+public class Brute {
+
+	
+		private static void drawSegment()	{
+		
+		
+	     // rescale coordinates and turn on animation mode
+        StdDraw.setXscale(0, 32768);
+        StdDraw.setYscale(0, 32768);
+        StdDraw.show(0);
+
+	}
+        
+        private static Point [] readPoints(){
+        // read in the input and place it in an array to be sorted later
+        String filename = "input6.txt";
+        In in = new In(filename);
+          int N = in.readInt();
+        Point[] p = new Point [N];
+        for (int i = 0; i < N; i++) {
+        	p[i]=new Point(in.readInt(),in.readInt());
+            
+              }
+        
+        return p; //return array p(x,y) to be sorted
+
+      		
+	}
+	
+     // Confirm an array of points is sorted
+        private static boolean sorted(Point[] p) {
+           if (p.length < 2)	{
+                return true;
+           }
+            int i = 0;
+            int cmp = 0; 
+            
+            int n = p.length;
+            do {
+                cmp = p[i].compareTo(p[++i]);
+            } while (cmp == 0 && i < n);
+            assert cmp != 0 || i == n; 
+            if (cmp < 0) cmp = -1;
+            else cmp = 1;
+            int nextcmp;
+            while (i < n - 1) {
+                nextcmp = p[i].compareTo(p[++i]);
+                if      (nextcmp < 0) nextcmp = -1;
+                else if (nextcmp > 0) nextcmp = 1;
+                if (cmp != nextcmp && nextcmp != 0)
+                    return false;
+            }
+            return true;
+      	
+	}
+	
+	
+        //print the line segments
+        
+        private static void print(Point [] p){
+        	
+            for (int i = 0; i < p.length-1; i++) {
+                System.out.print(p[i] + " -> ");
+            }
+        		
+}
+        //draw the line segments
+        private static void draw(Point [] p){
+        	assert sorted(p);
+            p[0].drawTo(p[p.length - 1]);
+        }
+        
+        
+        private static void output(Point[] p) {
+            Arrays.sort(p);
+            print(p);
+            draw(p);
+        }
+        
+        
+        //are the points collinear
+        
+        private static boolean collinear(Point [] p)	{
+        	
+        	int lnth= p.length;
+        	if(lnth < 2)	
+        		return true;
+        	
+        Point base = p[0];
+        	double slope = base.slopeTo(p[1]);
+        	 for (int i = 2; i < p.length; i++) {
+              
+        if (slope != base.slopeTo(p[i]))   return false;
+        
+        	 }
+        	 
+       return true;
+      
+        }
+
+
+
+public static void main(String[] args) { // unit test
+	drawSegment();
+    Point[] points = readPoints();
+
+}
